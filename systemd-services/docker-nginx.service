@@ -1,0 +1,24 @@
+[Unit]
+Description=Nginx docker container which will be as a reverse proxy for the other services
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=30
+
+ExecStart=/usr/bin/docker run --rm \
+                        --name=nginx \
+                        -e PUID=1000 \
+                        -e PGID=1000 \
+                        -e TZ=Europe/Skopje \
+                        -p 80:80 \
+                        -p 443:443 \
+                        -v /etc/nginx/config:/config \
+                        --network home-theater-system \
+                        linuxserver/nginx
+
+ExecStop=/usr/bin/docker stop nginx
+
+[Install]
+WantedBy=multi-user.target

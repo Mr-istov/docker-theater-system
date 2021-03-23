@@ -1,0 +1,25 @@
+[Unit]
+Description=Plex docker container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=30
+
+ExecStart=/usr/bin/docker run --rm \
+                        --name=plex \
+                        -e PUID=1003\
+                        -e PGID=1003 \
+                        -e VERSION=docker \
+                        -e UMASK_SET=022 \
+                        -e PLEX_CLAIM=claim-gYEedMng1u8avT2Wv5f8 \
+                        -v /home/plex/library:/config \
+                        -v /home/data:/tv \
+                        --network home-theater-system \
+                        ghcr.io/linuxserver/plex
+
+ExecStop=/usr/bin/docker stop plex
+
+[Install]
+WantedBy=multi-user.target

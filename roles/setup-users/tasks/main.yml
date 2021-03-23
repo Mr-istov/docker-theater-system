@@ -1,0 +1,13 @@
+---
+- name: create service users
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.id }}"
+    group: "{{ service_group }}"
+    state: present
+  loop:
+    - { name: "sonarr", id: 1001 }
+    - { name: "radarr", id: 1002 }
+    - { name: "jackett", id: 1003 }
+    - { name: "ombi", id: 1004 }
+    - { name: "transmission", id: 1005 }

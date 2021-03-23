@@ -1,0 +1,23 @@
+---
+- name: don't install apt recommends or suggests
+  copy:
+    src: apt-no-install-recommends
+    dest: /etc/apt/apt.conf.d/99recommends
+    owner: root
+    group: root
+    mode: 0644
+
+- name: update the system
+  apt:
+    update_cache: yes
+    upgrade: full
+
+- name: install packages that are required later by other packages
+  apt:
+    state: present
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common

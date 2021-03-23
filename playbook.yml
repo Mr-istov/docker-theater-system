@@ -1,0 +1,12 @@
+---
+# This is the main ansible playbook, which will install
+# all of the required tools and set them up
+
+- name: setup vm configuration
+  hosts: all
+  become: yes
+  gather_facts: True
+
+  roles:
+    - role: debian-base
+    - role: debian-docker

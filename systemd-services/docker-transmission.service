@@ -1,0 +1,25 @@
+[Unit]
+Description=Transmission docker container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=30
+
+ExecStart=/usr/bin/docker run --rm \
+                          --name=transmission \
+                          -e PUID=1004 \
+                          -e PGID=1005 \
+                          -e TZ=Europe/Skopje \
+                          -e TRANSMISSION_WEB_HOME=/combustion-release/ \
+                          -v /home/transmission/config:/config \
+                          -v /home/data/downloads:/downloads \
+                          -v /home/data:/data \
+                          --network home-theater-system \
+                          ghcr.io/linuxserver/transmission
+
+ExecStop=/usr/bin/docker stop transmission
+
+[Install]
+WantedBy=multi-user.target

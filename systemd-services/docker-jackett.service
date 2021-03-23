@@ -1,0 +1,23 @@
+[Unit]
+Description=Jackett docker container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=30
+
+ExecStart=/usr/bin/docker run --rm \
+                        --name=jackett \
+                        -e PUID=1005 \
+                        -e PGID=1006 \
+                        -e TZ=Europe/Skopje \
+                        -v /home/jackett/config:/config \
+                        -v /home/data:/data \
+                        --network home-theater-system \
+                        ghcr.io/linuxserver/jackett
+
+ExecStop=/usr/bin/docker stop jackett 
+
+[Install]
+WantedBy=multi-user.target
